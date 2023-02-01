@@ -1,9 +1,11 @@
 import { QueryClient } from 'react-query';
+import { request } from 'graphql-request';
+import { RequestDocument } from 'graphql-request/dist/types';
 
 // 프로젝트 내에서 type 과 interface 중 하나만 사용
 type AnyOBJ = { [key: string]: any };
 
-const BASE_URL = 'https://fakestoreapi.com';
+const BASE_URL = '/';
 
 // queryClient 반복생성을 막음
 export const getClient = (() => {
@@ -27,7 +29,7 @@ export const getClient = (() => {
 })();
 
 // 데이터 패칭 함수
-export const fetcher = async ({
+export const restFetcher = async ({
   method,
   path,
   body,
@@ -63,6 +65,9 @@ export const fetcher = async ({
     console.error(err);
   }
 };
+
+export const graphqlFetcher = (query: RequestDocument, variables = {}) =>
+  request(BASE_URL, query, variables);
 
 // QueryKey관리
 export const QueryKeys = {
