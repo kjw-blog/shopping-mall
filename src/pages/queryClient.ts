@@ -66,10 +66,12 @@ export const restFetcher = async ({
   }
 };
 
-export const graphqlFetcher = (query: RequestDocument, variables = {}) =>
-  request(BASE_URL, query, variables);
+export const graphqlFetcher = (query: RequestDocument, variables = {}) => {
+  return request(BASE_URL, query, variables);
+};
 
 // QueryKey관리
 export const QueryKeys = {
   PRODUCTS: 'PRODUCTS',
+  CART: 'CART',
 };
