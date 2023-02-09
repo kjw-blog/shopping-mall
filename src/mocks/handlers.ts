@@ -1,7 +1,6 @@
 import { graphql } from 'msw';
 import GET_PRODUCTS, { GET_PRODUCT } from '../graphql/products';
-import { ADD_CART, Cart, GET_CART } from '../graphql/cart';
-import { useEffect } from 'react';
+import { ADD_CART, Cart, GET_CART, UPDATE_CART } from '../graphql/cart';
 
 const mockProducts = Array.from({ length: 20 }).map((_, index) => ({
   id: index + 1 + '',
@@ -53,5 +52,40 @@ export const handlers = [
     cartData = newData;
 
     return res(ctx.data({ newData }));
+  }),
+  graphql.mutation(UPDATE_CART, (req, res, ctx) => {
+    /**
+     *  직접 짠 코드
+     *  예외 처리를 안했다...
+     */
+
+    // const { id, amount } = req.variables;
+
+    // const newData = {
+    //   ...cartData,
+    //   [id]: {
+    //     ...cartData[id],
+    //     amount,
+    //   },
+    // };
+
+    // cartData = newData;
+
+    // return res(ctx.data({ newData }));
+
+    const { id, amount } = req.variables;
+
+    const newData = { ...cartData };
+    if (!newData[id]) {
+      throw new Error('없는 데이터입니다.');
+    }
+
+    newData[id] = {
+      ...newData[id],
+      amount,
+    };
+
+    cartData = newData;
+    return res(ctx.data(newData));
   }),
 ];

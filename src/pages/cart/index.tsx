@@ -13,8 +13,6 @@ const Cart = () => {
     }
   );
 
-  console.log('test');
-
   const cartItems = Object.values(data || {});
   if (cartItems.length === 0) return <div>장바구니가 비었어요</div>;
 
