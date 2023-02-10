@@ -39,3 +39,9 @@ export const UPDATE_CART = gql`
     }
   }
 `;
+
+export const DELETE_CART = gql`
+  mutation DELETE_CART($id: string) {
+    id
+  }
+`;

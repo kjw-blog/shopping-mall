@@ -11,5 +11,9 @@
 2023-02-10 메모
 
 - react-query invalidateQueries vs setQueryData
-- invalidateQueries(queryKey) : 캐시를 무시하고 queryKey와 일치하는 GET api를 다시 호출하는 것 같음
-- setQueryData(queryKey,newData) : GET api를 다시 호출하지 않고 queryKey와 일치하는 데이터를 newData로 변경해주는 것 같음
+- invalidateQueries(queryKey) : 캐시를 무시하고 queryKey와 일치하는 GET api를 다시 호출하는 것 같음, 장점 : 간결한 소스
+
+- setQueryData(queryKey,newData) : GET api를 다시 호출하지 않고 queryKey와 일치하는 데이터를 newData로 변경해주는 것 같음, 장점 : 한번 업데이트를 하면 같은 queryKey를
+  사용하는 다른 컴포넌트에도 변경된 데이터로 적용된다
+
+-
