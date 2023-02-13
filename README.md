@@ -16,4 +16,15 @@
 - setQueryData(queryKey,newData) : GET api를 다시 호출하지 않고 queryKey와 일치하는 데이터를 newData로 변경해주는 것 같음, 장점 : 한번 업데이트를 하면 같은 queryKey를
   사용하는 다른 컴포넌트에도 변경된 데이터로 적용된다
 
--
+2023-02-13 메모
+
+- controlled component (제어 컴포넌트) vs uncontrolled component (비제어 컴포넌트)
+
+- controlled component :
+  사용자 입력 기반으로 state를 관리 setState에 의해 업데이트 됨
+  react에 의해 값이 제어되는 from element를 제어 컴포넌트 라고하는것 같음
+  사용자 입력값이 실시간으로 필요할 때 사용
+
+- uncontrolled component :
+  ref 를 통해 form 에 접근함.
+  setState로 일어나는 불필요한 렌더링을 줄이고, 제출시에만 값이 필요할 때 사용
