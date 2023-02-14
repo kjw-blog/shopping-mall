@@ -16,8 +16,12 @@ export const getClient = (() => {
       client = new QueryClient({
         defaultOptions: {
           queries: {
-            cacheTime: Infinity,
             staleTime: Infinity,
+            // 중요 ! 최초 fetching 후 다른 페이지로 이동 시 stale Data가 되는 시간
+            // default:0 이고 만약 staleTime을 60*1000 으로 하면
+            // 1분간 fresh한 데이터로 인식하는 것 같음
+
+            cacheTime: Infinity,
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
