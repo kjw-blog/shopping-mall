@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { EXECUTE_PAY } from '../../graphql/payment';
+// import { EXECUTE_PAY } from '../../graphql/payment';
 import { graphqlFetcher } from '../../pages/queryClient';
 import { checkedCartState } from '../../recoils/cart';
 import WillPay from '../willPay';
@@ -21,9 +21,9 @@ const Payment = () => {
     useRecoilState(checkedCartState);
   const [modalShown, toggleModal] = useState(false);
 
-  const { mutate: executePay } = useMutation((payInfos: PaymentInfos) =>
-    graphqlFetcher(EXECUTE_PAY, payInfos)
-  );
+  // const { mutate: executePay } = useMutation((payInfos: PaymentInfos) =>
+  //   graphqlFetcher(EXECUTE_PAY, payInfos)
+  // );
 
   const showModal = () => {
     toggleModal(true);
@@ -39,7 +39,7 @@ const Payment = () => {
       };
     });
 
-    executePay(payInfos);
+    // executePay(payInfos);
     setCheckedCartData([]);
 
     // 결제 페이지로 돌아오는것을 막기위해 replace를 true로 준다.
@@ -53,7 +53,7 @@ const Payment = () => {
 
   return (
     <div>
-      <WillPay handleSubmit={showModal} submitTitle='결제하기' />
+      <WillPay handleSubmit={showModal} submitTitle="결제하기" />
       <PaymentModal show={modalShown} proceed={proceed} cancel={cancel} />
     </div>
   );

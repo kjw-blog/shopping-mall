@@ -20,7 +20,6 @@ const GET_PRODUCTS = gql`
     price
     title
     description
-    createdAt
   }
 `;
 
@@ -31,7 +30,6 @@ export const GET_PRODUCT = gql`
     price
     title
     description
-    createdAt
   }
 `;
 
