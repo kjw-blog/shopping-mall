@@ -1,3 +1,3 @@
 - ApolloServer
-  -typeDeps : 구현할 데이터의 형태
+  -typeDeps : 구현할 데이터의 형태 (schema , prisma 생각하면 될듯)
   -resolvers : 실제로 데이터를 만들어서 resolve시켜줌
