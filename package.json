@@ -1,0 +1,16 @@
+{
+  "name": "shopping-mall",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://kjw-blog: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@github.com/kjw-blog/shopping-mall.git",
+  "author": "kjw-blog <rkdwjddnr11@naver.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "client": "yarn workspace client run dev"
+  }
+}
