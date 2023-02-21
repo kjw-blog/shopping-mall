@@ -6,7 +6,7 @@ import { gql } from 'apollo-server-express';
  *
  * extend 붙이는 이유
  * index.ts 에서 먼저 정의해놓은 type에다가 해당 type을 추가하겠다는 의미라고함
- *
+ * (파일 분리를 위해서)
  */
 
 const cartSchema = gql`
