@@ -1,5 +1,7 @@
 /** 임시 데이터 */
 
+import { Resolver } from './types';
+
 const mockProducts = Array.from({ length: 20 }).map((_, index) => ({
   id: index + 1 + '',
   imageUrl: `https://picsum.photos/id/${index + 10}/200/150`,
@@ -16,7 +18,7 @@ let cartData = [
 
 //
 
-const cartResolver = {
+const cartResolver: Resolver = {
   Query: {
     cart: (parent, args, context, info) => {
       return cartData;
