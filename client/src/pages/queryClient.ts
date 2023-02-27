@@ -5,7 +5,7 @@ import { RequestDocument } from 'graphql-request/dist/types';
 // 프로젝트 내에서 type 과 interface 중 하나만 사용
 type AnyOBJ = { [key: string]: any };
 
-const BASE_URL = '/';
+const BASE_URL = 'http://localhost:8000/graphql';
 
 // queryClient 반복생성을 막음
 export const getClient = (() => {
@@ -33,42 +33,42 @@ export const getClient = (() => {
 })();
 
 // 데이터 패칭 함수
-export const restFetcher = async ({
-  method,
-  path,
-  body,
-  params,
-}: {
-  method: 'GET' | 'PUT' | 'POST' | 'DELETE' | 'PATCH';
-  path: string;
-  body?: AnyOBJ;
-  params?: AnyOBJ;
-}) => {
-  try {
-    let url = `${BASE_URL}${path}`;
-    const fetchOptions: RequestInit = {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': BASE_URL,
-      },
-    };
+// export const restFetcher = async ({
+//   method,
+//   path,
+//   body,
+//   params,
+// }: {
+//   method: 'GET' | 'PUT' | 'POST' | 'DELETE' | 'PATCH';
+//   path: string;
+//   body?: AnyOBJ;
+//   params?: AnyOBJ;
+// }) => {
+//   try {
+//     let url = `${BASE_URL}${path}`;
+//     const fetchOptions: RequestInit = {
+//       method,
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Access-Control-Allow-Origin': BASE_URL,
+//       },
+//     };
 
-    if (params) {
-      const searchParams = new URLSearchParams(params);
+//     if (params) {
+//       const searchParams = new URLSearchParams(params);
 
-      url += '?' + searchParams.toString();
-    }
+//       url += '?' + searchParams.toString();
+//     }
 
-    if (body) fetchOptions.body = JSON.stringify(body);
+//     if (body) fetchOptions.body = JSON.stringify(body);
 
-    const res = await fetch(url, fetchOptions);
-    const json = await res.json();
-    return json;
-  } catch (err) {
-    console.error(err);
-  }
-};
+//     const res = await fetch(url, fetchOptions);
+//     const json = await res.json();
+//     return json;
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
 export const graphqlFetcher = (query: RequestDocument, variables = {}) => {
   return request(BASE_URL, query, variables);

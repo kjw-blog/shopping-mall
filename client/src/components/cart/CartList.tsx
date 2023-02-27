@@ -1,12 +1,12 @@
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { Cart } from '../../graphql/cart';
+import { CartType } from '../../graphql/cart';
 import { checkedCartState } from '../../recoils/cart';
 import CartItem from './CartItem';
 import WillPay from '../willPay';
 import { useNavigate } from 'react-router-dom';
 
-const CartList = ({ items }: { items: Cart[] }) => {
+const CartList = ({ items }: { items: CartType[] }) => {
   const navigate = useNavigate();
 
   const [checkedCartData, setCheckedCartData] =
@@ -80,7 +80,7 @@ const CartList = ({ items }: { items: Cart[] }) => {
   }, [checkedCartData]);
 
   useEffect(() => {
-    const checkedItems = checkboxRefs.reduce<Cart[]>((res, ref, i) => {
+    const checkedItems = checkboxRefs.reduce<CartType[]>((res, ref, i) => {
       if (ref.current!.checked) res.push(items[i]);
       return res;
     }, []);
