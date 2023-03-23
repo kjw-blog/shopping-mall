@@ -61,7 +61,7 @@ const cartResolver: Resolver = {
 
       return newCartItem;
     },
-    deleteCart: (parent, { id }, { db }, info) => {
+    deleteCart: (parent, { id }, { db }) => {
       const existCartItemIndex = db.cart.findIndex((item) => item.id === id);
 
       if (existCartItemIndex < 0) throw new Error('없는 데이터입니다.');
