@@ -28,3 +28,31 @@
 - uncontrolled component :
   ref 를 통해 form 에 접근함.
   setState로 일어나는 불필요한 렌더링을 줄이고, 제출시에만 값이 필요할 때 사용
+
+2023-03-29 메모
+
+infiniteQuery가 내려주는 data 형식
+
+- data : {
+  pages: [
+  { products: [ ... ] },
+  { products: [ ... ] } ,
+  { products: [ ... ] }
+  ],
+  pageParams: [undefined, ... ]
+  }
+- 데이터 표출 방법
+
+1.  map 안에서 map 을 한번 더 돌린다.
+    (강사님 권장방법, 페이지 별 데이터 식별이 쉬움)
+2.  data.pages.flatMap(page => page.products)를 사용해서 page안에 products을
+    추출해서 새로운 배열을 만든다.
+
+infiniteQuery의 끝 데이터 파악하는 방식
+
+1. scrollTop + window.clientHeight 등을 이용해서 스크롤이 끝점에 도달했는지 파악
+2. eventHandler (scroll) => 스크롤 이벤트로 감시. 매 스크롤 마다 이벤트가 발생하기 떄문에
+   throttle / debounce 처리가 필요하다. -> 쓰레드 메모리를 차지하고, 성능에도 좋지않아서
+   권장하지않음.
+3. intersectionObserver 이벤트 등록을 따로 하지않고, 브라우저에서 제공하는 별개의 감시자임
+   JS랑 별도로 동작이 되어서 성능이 좋음
