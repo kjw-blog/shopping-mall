@@ -4,7 +4,7 @@ import { ADD_CART } from '../../graphql/cart';
 import { Product } from '../../graphql/products';
 import { graphqlFetcher } from '../../pages/queryClient';
 
-const ProductItem = ({ id, imageUrl, price, title }: Product) => {
+const AdminItem = ({ id, imageUrl, price, title }: Product) => {
   const { mutate: addCart } = useMutation((id: string) =>
     graphqlFetcher(ADD_CART, { id })
   );
@@ -22,10 +22,10 @@ const ProductItem = ({ id, imageUrl, price, title }: Product) => {
           addCart(id);
         }}
       >
-        담기
+        어드민!!
       </button>
     </li>
   );
 };
 
-export default ProductItem;
+export default AdminItem;
