@@ -19,13 +19,16 @@ const setJSON = (data: Products) => writeDB(DBField.PRODUCTS, data);
 
 const productResolver: Resolver = {
   Query: {
-    products: (parent, { cursor = '' }, { db }) => {
+    products: (parent, { cursor = '', showDeleted = false }, { db }) => {
+      const filteredDB = showDeleted
+        ? db.products
+        : db.products.filter((product) => !!product.createdAt);
       // cursor가 product의 id 와 같은 상품의 index + 1 (다음 상품 인덱스)
       const fromIndex =
-        db.products.findIndex((product) => product.id === cursor) + 1;
+        filteredDB.findIndex((product) => product.id === cursor) + 1;
 
       // 위에서 찾은 index 번호로 상품을 나눔 (15개 씩)
-      return db.products.slice(fromIndex, fromIndex + 15) || [];
+      return filteredDB.slice(fromIndex, fromIndex + 15) || [];
     },
     product: (parent, { id }, { db }) => {
       const found = db.products.find((item) => item.id === id);
@@ -33,6 +36,19 @@ const productResolver: Resolver = {
       return null;
     },
   },
+  /**
+   * 60페이지 중 15개씩 끊을 때
+   * cursor | ids
+   * ''     | 0 ~ 14
+   * 15     | 15 ~ 29
+   * 30     | 30 ~ 44
+   * 45     | 45 ~ 59
+   *
+   * cursor : 이전 페이지의 마지막 id
+   * page 단위로 나눠도 되지만 그럴경우 데이터가 추가 되거나 할때 애매할수있다함
+   *
+   */
+
   Mutation: {
     addProduct: (parent, { imageUrl, price, title, description }, { db }) => {
       const newProduct = {
@@ -83,16 +99,3 @@ const productResolver: Resolver = {
 };
 
 export default productResolver;
-
-/**
- * 60페이지 중 15개씩 끊을 때
- * cursor | ids
- * ''     | 0 ~ 14
- * 15     | 15 ~ 29
- * 30     | 30 ~ 44
- * 45     | 45 ~ 59
- *
- * cursor : 이전 페이지의 마지막 id
- * page 단위로 나눠도 되지만 그럴경우 데이터가 추가 되거나 할때 애매할수있다함
- *
- */
