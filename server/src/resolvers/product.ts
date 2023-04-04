@@ -20,9 +20,16 @@ const setJSON = (data: Products) => writeDB(DBField.PRODUCTS, data);
 const productResolver: Resolver = {
   Query: {
     products: (parent, { cursor = '', showDeleted = false }, { db }) => {
+      const [hasCreatedAt, noCreatedAt] = [
+        db.products
+          .filter((product) => !!product.createdAt)
+          .sort((a, b) => b.createdAt! - a.createdAt!),
+        db.products.filter((product) => !product.createdAt),
+      ];
+
       const filteredDB = showDeleted
-        ? db.products
-        : db.products.filter((product) => !!product.createdAt);
+        ? [...hasCreatedAt, ...noCreatedAt]
+        : hasCreatedAt;
       // cursor가 product의 id 와 같은 상품의 index + 1 (다음 상품 인덱스)
       const fromIndex =
         filteredDB.findIndex((product) => product.id === cursor) + 1;

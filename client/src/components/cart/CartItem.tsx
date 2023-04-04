@@ -9,7 +9,6 @@ const CartItem = (
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const queryClient = getClient();
-
   const { mutate: updateCart } = useMutation(
     ({ id, amount }: { id: string; amount: number }) =>
       graphqlFetcher(UPDATE_CART, { id, amount }),
