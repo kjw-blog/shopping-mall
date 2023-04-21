@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import ProductItem from '../../components/product/item';
 
 import ProductList from '../../components/product/list';
 import GET_PRODUCTS, { Products } from '../../graphql/products';
@@ -38,7 +37,7 @@ const ProductListPage = () => {
   return (
     <div>
       <h2>상품 목록</h2>
-      <ProductList list={data?.pages || []} Item={ProductItem} />
+      <ProductList list={data?.pages || []} />
       <div ref={fetchMoreRef} />
     </div>
   );

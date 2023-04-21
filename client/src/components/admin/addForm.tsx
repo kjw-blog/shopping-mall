@@ -1,16 +1,19 @@
 import { SyntheticEvent } from 'react';
 import { QueryClient, useMutation } from 'react-query';
-import { ADD_PRODUCT, Product, Products } from '../../graphql/products';
+import {
+  ADD_PRODUCT,
+  MutableProduct,
+  Product,
+  Products,
+} from '../../graphql/products';
 import { QueryKeys, getClient, graphqlFetcher } from '../../pages/queryClient';
 import arrToObj from '../../util/arrToObj';
-
-type OmittedProduct = Omit<Product, 'id' | 'createdAt'>;
 
 const AddForm = () => {
   const queryClient = getClient();
 
   const { mutate: addProduct } = useMutation(
-    ({ title, imageUrl, price, description }: OmittedProduct) =>
+    ({ title, imageUrl, price, description }: MutableProduct) =>
       graphqlFetcher(ADD_PRODUCT, { title, imageUrl, price, description }),
     {
       onSuccess: () => {
@@ -52,7 +55,7 @@ const AddForm = () => {
     e.preventDefault();
     const formData = arrToObj([...new FormData(e.target as HTMLFormElement)]);
     formData.price = Number(formData.price);
-    addProduct(formData as OmittedProduct);
+    addProduct(formData as MutableProduct);
   };
 
   return (
