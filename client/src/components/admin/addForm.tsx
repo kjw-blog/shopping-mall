@@ -22,8 +22,9 @@ const AddForm = () => {
           // 하위키는 설정해준 QueryKeys.PRODUCTS를 제외한 키인듯?
           exact: false,
 
-          // refetchInactive : 전역 설정한 refetchOnMount 가 false로 돼있어서
-          // 해당 쿼리로 불러올 데이터의 상태가 inactive이기 때문에 true로 줘서
+          // refetchInactive :
+          // 전역 설정한 refetchOnMount 가 false로 돼있어서 해당 페이지로 이동 해도 refetching이 이루어지지 않음.
+          // 해당 쿼리로 불러올 데이터의 상태가 inactive이기 때문에 (마운트 되지 않은 컴포넌트) true로 줘서
           // inactive상태인 쿼리도 refetching 함
           refetchInactive: true,
         });
