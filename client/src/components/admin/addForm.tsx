@@ -1,11 +1,6 @@
 import { SyntheticEvent } from 'react';
-import { QueryClient, useMutation } from 'react-query';
-import {
-  ADD_PRODUCT,
-  MutableProduct,
-  Product,
-  Products,
-} from '../../graphql/products';
+import { useMutation } from 'react-query';
+import { ADD_PRODUCT, MutableProduct } from '../../graphql/products';
 import { QueryKeys, getClient, graphqlFetcher } from '../../pages/queryClient';
 import arrToObj from '../../util/arrToObj';
 

@@ -1,4 +1,11 @@
-import { createRef, SyntheticEvent, useEffect, useRef, useState } from 'react';
+import {
+  createRef,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useRecoilState } from 'recoil';
 import { CartType } from '../../graphql/cart';
 import { checkedCartState } from '../../recoils/cart';
@@ -17,6 +24,8 @@ const CartList = ({ items }: { items: CartType[] }) => {
 
   const [formData, setFormData] = useState<FormData>();
 
+  const enabledItems = items.filter((item) => item.product.createdAt);
+
   const setAllCheckedFromItems = () => {
     if (!formRef.current) return;
 
@@ -25,7 +34,7 @@ const CartList = ({ items }: { items: CartType[] }) => {
     // name이 select-item이고, 체크된 input의 개수
     const selectedCount = data.getAll('select-item').length;
 
-    const allChecked = selectedCount === items.length;
+    const allChecked = selectedCount === enabledItems.length;
     formRef.current.querySelector<HTMLInputElement>('.select-all')!.checked =
       allChecked;
   };
@@ -35,9 +44,11 @@ const CartList = ({ items }: { items: CartType[] }) => {
     const allChecked = target.checked;
 
     // select-all input의 checked 상태에 따라 하위 input의 checked를 수정해준다
-    checkboxRefs.forEach((inputElem) => {
-      inputElem.current!.checked = allChecked;
-    });
+    checkboxRefs
+      .filter((inputElem) => !inputElem.current!.disabled)
+      .forEach((inputElem) => {
+        inputElem.current!.checked = allChecked;
+      });
   };
 
   // 전체 선택에 대한 함수

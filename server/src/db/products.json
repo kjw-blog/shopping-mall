@@ -4,8 +4,7 @@
   "imageUrl": "https://picsum.photos/id/1/200/150",
   "price": 7000,
   "title": "임시상품1",
-  "description": "임시상세내용1",
-  "createdAt": 1677819532080
+  "description": "임시상세내용1"
  },
  {
   "id": "a5cafced-9308-412a-8b58-8aaef84247d8",
@@ -801,7 +800,7 @@
  {
   "id": "54d15ba8-08a1-41bf-8d7f-f6d14f91674d",
   "imageUrl": "https://play-lh.googleusercontent.com/8uMTbCdy6B93EGM5p6tfOVWnkDpee5ZOVYfaBgsWciG77nxZEpjltRtaOTxsI52x8Q=w240-h480-rw",
-  "price": 8500,
+  "price": 85001,
   "title": "추가상품",
   "description": "배민이미지",
   "createdAt": 1680508563313
@@ -817,7 +816,7 @@
  {
   "id": "1947e489-40bf-4fe7-97b5-2316983ef2de",
   "imageUrl": "https://picsum.photos/id/7/200/150",
-  "price": 1234,
+  "price": 12345,
   "title": "123",
   "description": "00",
   "createdAt": 1680575579031
@@ -825,7 +824,7 @@
  {
   "id": "236b53f5-878b-4ad7-ab92-da60017a7f62",
   "imageUrl": "https://picsum.photos/id/7/200/150",
-  "price": 1234,
+  "price": 12341,
   "title": "1234",
   "description": "00",
   "createdAt": 1680575639712
@@ -843,8 +842,7 @@
   "imageUrl": "https://play-lh.googleusercontent.com/8uMTbCdy6B93EGM5p6tfOVWnkDpee5ZOVYfaBgsWciG77nxZEpjltRtaOTxsI52x8Q=w240-h480-rw",
   "price": 50000,
   "title": "배달비 5만원",
-  "description": "비싸다",
-  "createdAt": 1680576042712
+  "description": "비싸다"
  },
  {
   "id": "1ffa2991-93c5-4c09-bf40-5322092057eb",

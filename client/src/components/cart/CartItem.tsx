@@ -5,7 +5,7 @@ import { getClient, graphqlFetcher, QueryKeys } from '../../pages/queryClient';
 import CartItemData from './CartItemData';
 
 const CartItem = (
-  { id, amount, product: { imageUrl, price, title } }: CartType,
+  { id, amount, product: { imageUrl, price, title, createdAt } }: CartType,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const queryClient = getClient();
@@ -75,15 +75,20 @@ const CartItem = (
         name='select-item'
         ref={ref}
         data-id={id}
+        disabled={!createdAt}
       />
       <CartItemData imageUrl={imageUrl} price={price} title={title} />
-      <input
-        className='cart-item__amount'
-        type='number'
-        onChange={handleUpdateAmount}
-        min={1}
-        value={amount}
-      />
+      {!createdAt ? (
+        <div>삭제된 상품입니다.</div>
+      ) : (
+        <input
+          className='cart-item__amount'
+          type='number'
+          onChange={handleUpdateAmount}
+          min={1}
+          value={amount}
+        />
+      )}
       <button
         className='cart-item__button'
         type='button'
