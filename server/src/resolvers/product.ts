@@ -14,32 +14,64 @@
 import { Products, Resolver } from './types';
 import { v4 as uuid } from 'uuid';
 import { DBField, writeDB } from '../dbController';
+import { db } from '../../firebase';
+import {
+  DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+} from 'firebase/firestore';
+
+const PAGE_SIZE = 15;
 
 const setJSON = (data: Products) => writeDB(DBField.PRODUCTS, data);
 
 const productResolver: Resolver = {
   Query: {
-    products: (parent, { cursor = '', showDeleted = false }, { db }) => {
-      const [hasCreatedAt, noCreatedAt] = [
-        db.products
-          .filter((product) => !!product.createdAt)
-          .sort((a, b) => b.createdAt! - a.createdAt!),
-        db.products.filter((product) => !product.createdAt),
-      ];
+    products: async (parent, { cursor = '', showDeleted = false }) => {
+      // firebase store에서 가져온 db 중 "products"를 가져온다
+      const products = collection(db, 'products');
 
-      const filteredDB = showDeleted
-        ? [...hasCreatedAt, ...noCreatedAt]
-        : hasCreatedAt;
-      // cursor가 product의 id 와 같은 상품의 index + 1 (다음 상품 인덱스)
-      const fromIndex =
-        filteredDB.findIndex((product) => product.id === cursor) + 1;
+      // 생성일 역순으로 정렬
+      const queryOptions: any[] = [orderBy('createdAt', 'desc')];
 
-      // 위에서 찾은 index 번호로 상품을 나눔 (15개 씩)
-      return filteredDB.slice(fromIndex, fromIndex + 15) || [];
+      // 만약 cursor (리스트 배열 마지막 ID)가 있으면 시작지점을 해당 id로 설정한다
+      if (cursor) queryOptions.push(startAfter(cursor));
+
+      // 만약 showDeleted가 false라면 createdAt이 null이 아닌것만 가져온다.
+      if (!showDeleted) queryOptions.unshift(where('createdAt', '!=', null));
+
+      // products table에 위에 설정한 옵션 + PAGE_SIZE만큼 limit를 설정한 쿼리
+      const q = query(products, ...queryOptions, limit(PAGE_SIZE));
+
+      // 해당 쿼리 문서를 가져옴. (getDocs: 문서 여러개 , getDoc: 단일 문서)
+      const snapshot = await getDocs(q);
+      const data: DocumentData[] = [];
+
+      // 쿼리 결과 반복문을 돌리며 data배열에 결과 data와 id를 넣어준다
+      snapshot.forEach((doc) => {
+        data.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      return data;
     },
-    product: (parent, { id }, { db }) => {
-      const found = db.products.find((item) => item.id === id);
-      if (found) return found;
+    product: async (parent, { id }) => {
+      const snapshot = await getDoc(doc(db, 'products', id));
+
+      if (snapshot)
+        return {
+          id: snapshot.id,
+          ...snapshot.data(),
+        };
       return null;
     },
   },
