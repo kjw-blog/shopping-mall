@@ -1,14 +1,31 @@
 /** 임시 데이터 */
 
+import {
+  DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+} from 'firebase/firestore';
 import { DBField, writeDB } from '../dbController';
 import { Cart, Resolver } from './types';
+import { db } from '../../firebase';
 
 const setJSON = (data: Cart) => writeDB(DBField.CART, data);
 
 const cartResolver: Resolver = {
   Query: {
-    cart: (parent, args, { db }) => {
-      return db.cart;
+    cart: async (parent, args) => {
+      const cart = collection(db, 'cart');
+      const q = query(cart);
+
+      const snapshot = await getDocs(q);
+
+      const data: DocumentData[] = [];
+      snapshot.forEach((doc) => data.push({ id: doc.id, ...doc.data() }));
+
+      return data;
     },
   },
   Mutation: {
@@ -91,8 +108,14 @@ const cartResolver: Resolver = {
     },
   },
   CartItem: {
-    product: (cartItem, args, { db }) =>
-      db.products.find((product) => product.id === cartItem.id),
+    product: async (cartItem, args) => {
+      const snapshot = await getDoc(cartItem.product);
+
+      return {
+        ...(snapshot.data() as any),
+        id: snapshot.id,
+      };
+    },
   },
 };
 
