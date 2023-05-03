@@ -14,7 +14,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { DBField, writeDB } from '../dbController';
-import { Cart, Resolver } from './types';
+import { Cart, Product, Resolver } from './types';
 import { db } from '../../firebase';
 
 const setJSON = (data: Cart) => writeDB(DBField.CART, data);
@@ -143,22 +143,28 @@ const cartResolver: Resolver = {
 
       return cartId;
     },
-    executePay: (parent, { ids }, { db }, info) => {
-      const newCartData = db.cart.filter(
-        (cartItem) => !ids.includes(cartItem.id)
-      );
+    executePay: async (parent, { ids }) => {
+      const deleted = [];
 
-      if (
-        newCartData.some((item) => {
-          const product = db.products.find((product) => product.id === item.id);
-          return !product?.createdAt;
-        })
-      )
-        throw new Error('삭제된 상품이 포함되어 결제를 진행할 수 없습니다.');
+      for await (const id of ids) {
+        const cartRef = doc(db, 'cart', id);
+        const cartSnapshot = await getDoc(cartRef);
+        const cartData = cartSnapshot.data();
 
-      db.cart = newCartData;
-      setJSON(db.cart);
-      return ids;
+        const productRef = cartData?.product;
+
+        if (!productRef) throw Error('상품 정보가 없다!');
+
+        const product = (await getDoc(productRef)).data() as Product;
+        if (!product) throw Error('상품 정보가 없다!');
+
+        if (product.createdAt) {
+          await deleteDoc(cartRef);
+          deleted.push(id);
+        }
+      }
+
+      return deleted;
     },
   },
   CartItem: {
