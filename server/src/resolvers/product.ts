@@ -42,7 +42,11 @@ const productResolver: Resolver = {
       const queryOptions: any[] = [orderBy('createdAt', 'desc')];
 
       // 만약 cursor (리스트 배열 마지막 ID)가 있으면 시작지점을 해당 id로 설정한다
-      if (cursor) queryOptions.push(startAfter(cursor));
+      if (cursor) {
+        const snapshot = await getDoc(doc(db, 'products', cursor));
+
+        queryOptions.push(startAfter(snapshot));
+      }
 
       // 만약 showDeleted가 false라면 createdAt이 null이 아닌것만 가져온다.
       if (!showDeleted) queryOptions.unshift(where('createdAt', '!=', null));
@@ -113,7 +117,7 @@ const productResolver: Resolver = {
         throw new Error('없는 상품입니다.');
       }
 
-      await updateDoc(productRef, data);
+      await updateDoc(productRef, { ...data, createdAt: serverTimestamp() });
 
       const snapshot = await getDoc(productRef);
 
